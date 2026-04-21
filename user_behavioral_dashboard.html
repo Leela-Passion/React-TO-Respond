@@ -1,0 +1,207 @@
+<h2 class="sr-only">Personal behavioral reflection dashboard for an individual employee showing weekly trends, locus of control, and daily reflection prompts.</h2>
+
+<style>
+.db-wrap { font-family: var(--font-sans); padding: 0 0 2rem; }
+.db-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+.db-name { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+.db-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #085041; flex-shrink: 0; }
+.metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.25rem; }
+.metric-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+.metric-label { font-size: 11px; color: var(--color-text-tertiary); text-transform: none; margin-bottom: 6px; letter-spacing: 0.02em; }
+.metric-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); line-height: 1; }
+.metric-delta { font-size: 11px; margin-top: 4px; }
+.delta-up { color: #0F6E56; }
+.delta-down { color: #A32D2D; }
+.delta-flat { color: var(--color-text-tertiary); }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); letter-spacing: 0.06em; text-transform: uppercase; margin: 1.5rem 0 0.75rem; }
+.two-col { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 14px; margin-bottom: 1.25rem; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
+.axis-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.axis-name { font-size: 12px; color: var(--color-text-secondary); width: 110px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 6px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; }
+.axis-score { font-size: 12px; font-weight: 500; color: var(--color-text-primary); width: 28px; text-align: right; }
+.today-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+.reflection-q { font-size: 14px; color: var(--color-text-primary); font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
+.opt-row { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1rem; }
+.opt-btn { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 13px; color: var(--color-text-primary); text-align: left; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.opt-btn:hover { border-color: #1D9E75; background: #E1F5EE; color: #085041; }
+.opt-btn.selected { border-color: #1D9E75; background: #E1F5EE; color: #085041; font-weight: 500; }
+.streak-row { display: flex; gap: 5px; align-items: center; margin-top: 0.5rem; }
+.streak-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-done { background: #1D9E75; }
+.dot-skip { background: var(--color-border-tertiary); }
+.dot-today { background: #1D9E75; outline: 2px solid #9FE1CB; outline-offset: 1px; }
+.insight-box { border-left: 2px solid #1D9E75; padding: 10px 14px; background: #E1F5EE; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; margin-top: 0.75rem; }
+.insight-label { font-size: 11px; color: #085041; font-weight: 500; margin-bottom: 3px; }
+.insight-text { font-size: 13px; color: #0F6E56; line-height: 1.5; }
+.week-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.chip { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+.chip-ext { background: #FAECE7; color: #712B13; }
+.chip-int { background: #E1F5EE; color: #085041; }
+.chip-neu { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+</style>
+
+<div class="db-wrap">
+
+  <div class="db-header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="avatar">AR</div>
+      <div>
+        <div class="db-name">Arjun Reddy</div>
+        <div class="db-sub">Week 16 · Private · visible only to you</div>
+      </div>
+    </div>
+    <button onclick="sendPrompt('What do my behavioral trends mean and how can I improve?')" style="font-size:12px;padding:6px 14px;">View insights ↗</button>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-label">Reflection streak</div>
+      <div class="metric-val">12</div>
+      <div class="metric-delta delta-up">↑ days in a row</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Internal locus</div>
+      <div class="metric-val">74%</div>
+      <div class="metric-delta delta-up">↑ 8% this week</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Contribution score</div>
+      <div class="metric-val">81</div>
+      <div class="metric-delta delta-flat">→ stable</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Honesty signal</div>
+      <div class="metric-val">High</div>
+      <div class="metric-delta delta-up" style="color:#0F6E56;">answer variety good</div>
+    </div>
+  </div>
+
+  <div class="section-label">Today's reflection</div>
+  <div class="today-card">
+    <div class="reflection-q">What best explains how today's challenges unfolded?</div>
+    <div class="opt-row" id="opts">
+      <button class="opt-btn" onclick="selectOpt(this)">I had the tools — execution was in my hands</button>
+      <button class="opt-btn" onclick="selectOpt(this)">External factors made it harder than expected</button>
+      <button class="opt-btn" onclick="selectOpt(this)">A mix — some mine, some beyond my control</button>
+      <button class="opt-btn" onclick="selectOpt(this)">I'm not sure yet — still processing</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:5px;">This week</div>
+        <div class="streak-row">
+          <div class="streak-dot dot-done"></div>
+          <div class="streak-dot dot-done"></div>
+          <div class="streak-dot dot-done"></div>
+          <div class="streak-dot dot-done"></div>
+          <div class="streak-dot dot-today"></div>
+          <div class="streak-dot dot-skip"></div>
+          <div class="streak-dot dot-skip"></div>
+          <span style="font-size:11px;color:var(--color-text-tertiary);margin-left:4px;">Mon–Sun</span>
+        </div>
+      </div>
+      <button id="submit-btn" onclick="submitReflection()" style="font-size:12px;padding:7px 18px;opacity:0.4;pointer-events:none;">Submit</button>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:14px;">Behavioral axes · 30-day trend</div>
+      <div class="axis-row">
+        <div class="axis-name">Internal locus</div>
+        <div class="bar-track"><div class="bar-fill" style="width:74%;background:#1D9E75;"></div></div>
+        <div class="axis-score">74</div>
+      </div>
+      <div class="axis-row">
+        <div class="axis-name">Contribution</div>
+        <div class="bar-track"><div class="bar-fill" style="width:81%;background:#1D9E75;"></div></div>
+        <div class="axis-score">81</div>
+      </div>
+      <div class="axis-row">
+        <div class="axis-name">Self-awareness</div>
+        <div class="bar-track"><div class="bar-fill" style="width:66%;background:#7F77DD;"></div></div>
+        <div class="axis-score">66</div>
+      </div>
+      <div class="axis-row">
+        <div class="axis-name">Recovery speed</div>
+        <div class="bar-track"><div class="bar-fill" style="width:58%;background:#7F77DD;"></div></div>
+        <div class="axis-score">58</div>
+      </div>
+      <div class="axis-row" style="margin-bottom:0;">
+        <div class="axis-name">Other-orientation</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:#1D9E75;"></div></div>
+        <div class="axis-score">70</div>
+      </div>
+      <div style="margin-top:14px;position:relative;width:100%;height:110px;">
+        <canvas id="trendChart" role="img" aria-label="Line chart showing internal locus score rising from 58 to 74 over 4 weeks">Internal locus trend: Week 1=58, Week 2=63, Week 3=69, Week 4=74.</canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:12px;">This week's patterns</div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:8px;">Locus by day</div>
+      <div class="week-chips">
+        <span class="chip chip-int">Mon · internal</span>
+        <span class="chip chip-ext">Tue · external</span>
+        <span class="chip chip-int">Wed · internal</span>
+        <span class="chip chip-int">Thu · internal</span>
+        <span class="chip chip-neu">Fri · mixed</span>
+      </div>
+      <div class="insight-box" style="margin-top:1rem;">
+        <div class="insight-label">Mirror</div>
+        <div class="insight-text">Tuesday felt like things were outside your control — that's real on difficult days.</div>
+      </div>
+      <div class="insight-box" style="margin-top:8px;border-left-color:#7F77DD;background:#EEEDFE;">
+        <div class="insight-label" style="color:#3C3489;">Reframe</div>
+        <div class="insight-text" style="color:#534AB7;">You still chose how to respond. That's yours.</div>
+      </div>
+      <button onclick="sendPrompt('Tell me more about my recovery pattern after difficult days')" style="font-size:12px;margin-top:14px;width:100%;padding:8px 0;">Explore my patterns ↗</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function selectOpt(btn) {
+  document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const sb = document.getElementById('submit-btn');
+  sb.style.opacity = '1';
+  sb.style.pointerEvents = 'auto';
+}
+function submitReflection() {
+  const sel = document.querySelector('.opt-btn.selected');
+  if (!sel) return;
+  sendPrompt('I just completed my daily reflection. What does my answer "' + sel.textContent.trim() + '" reveal about my behavioral pattern today?');
+}
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels: ['W13','W14','W15','W16'],
+    datasets: [{
+      label: 'Internal locus',
+      data: [58, 63, 69, 74],
+      borderColor: '#1D9E75',
+      backgroundColor: isDark ? 'rgba(29,158,117,0.15)' : 'rgba(29,158,117,0.08)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#1D9E75',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: isDark ? '#888780' : '#888780' } },
+      y: { min: 40, max: 100, grid: { color: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }, ticks: { stepSize: 20, font: { size: 11 }, color: isDark ? '#888780' : '#888780' } }
+    }
+  }
+});
+</script>

@@ -1,0 +1,265 @@
+<h2 class="sr-only">Organisation-level behavioral trends dashboard showing aggregated team patterns. No individual data is shown.</h2>
+
+<style>
+.org-wrap { font-family: var(--font-sans); padding: 0 0 2rem; }
+.org-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+.privacy-pill { font-size: 11px; padding: 4px 12px; border-radius: 20px; background: #E1F5EE; color: #085041; font-weight: 500; border: 0.5px solid #5DCAA5; }
+.metric-grid4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.25rem; }
+.mc { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+.mc-label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 6px; }
+.mc-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); line-height: 1; }
+.mc-delta { font-size: 11px; margin-top: 4px; }
+.up { color: #0F6E56; } .dn { color: #A32D2D; } .fl { color: var(--color-text-tertiary); }
+.sl { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); letter-spacing: 0.06em; text-transform: uppercase; margin: 1.5rem 0 0.75rem; }
+.three-col { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-bottom: 1.25rem; }
+.two-col2 { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); gap: 14px; margin-bottom: 1.25rem; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
+.card-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 12px; }
+.team-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.team-name { font-size: 12px; color: var(--color-text-secondary); width: 90px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 7px; background: var(--color-border-tertiary); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-score { font-size: 12px; font-weight: 500; color: var(--color-text-primary); width: 26px; text-align: right; }
+.alert-card { border-left: 2px solid #D85A30; background: #FAECE7; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 10px 14px; margin-bottom: 8px; }
+.alert-head { font-size: 12px; font-weight: 500; color: #712B13; margin-bottom: 2px; }
+.alert-body { font-size: 12px; color: #993C1D; line-height: 1.5; }
+.ok-card { border-left: 2px solid #1D9E75; background: #E1F5EE; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 10px 14px; margin-bottom: 8px; }
+.ok-head { font-size: 12px; font-weight: 500; color: #085041; margin-bottom: 2px; }
+.ok-body { font-size: 12px; color: #0F6E56; line-height: 1.5; }
+.no-indiv { font-size: 11px; color: var(--color-text-tertiary); padding: 10px 14px; border: 0.5px dashed var(--color-border-tertiary); border-radius: var(--border-radius-md); text-align: center; margin-top: 0.75rem; }
+.heatmap-row { display: flex; gap: 4px; align-items: center; margin-bottom: 5px; }
+.hm-label { font-size: 11px; color: var(--color-text-secondary); width: 70px; }
+.hm-cell { width: 30px; height: 22px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; }
+.hm-header { display: flex; gap: 4px; margin-bottom: 6px; padding-left: 74px; }
+.hm-hd { width: 30px; font-size: 10px; color: var(--color-text-tertiary); text-align: center; }
+</style>
+
+<div class="org-wrap">
+
+  <div class="org-header">
+    <div>
+      <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);">Org behavioral trends</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px;">TechCorp · 214 active employees · Week 16</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span class="privacy-pill">Aggregate only — no individual data</span>
+      <button onclick="sendPrompt('What do these org-level behavioral trends suggest we should act on?')" style="font-size:12px;padding:6px 14px;">Generate report ↗</button>
+    </div>
+  </div>
+
+  <div class="metric-grid4">
+    <div class="mc">
+      <div class="mc-label">Active this week</div>
+      <div class="mc-val">214</div>
+      <div class="mc-delta up">↑ 91% participation</div>
+    </div>
+    <div class="mc">
+      <div class="mc-label">Org internal locus</div>
+      <div class="mc-val">67%</div>
+      <div class="mc-delta up">↑ 5% vs last month</div>
+    </div>
+    <div class="mc">
+      <div class="mc-label">Contribution avg</div>
+      <div class="mc-val">72</div>
+      <div class="mc-delta dn">↓ 4 near deadlines</div>
+    </div>
+    <div class="mc">
+      <div class="mc-label">Honesty signal</div>
+      <div class="mc-val">Stable</div>
+      <div class="mc-delta fl">entropy consistent</div>
+    </div>
+  </div>
+
+  <div class="sl">Team patterns · internal locus score</div>
+  <div class="two-col2">
+    <div class="card">
+      <div class="card-title">Internal locus by team (aggregated)</div>
+      <div class="team-row">
+        <div class="team-name">Engineering</div>
+        <div class="bar-track"><div class="bar-fill" style="width:78%;background:#1D9E75;"></div></div>
+        <div class="bar-score">78</div>
+      </div>
+      <div class="team-row">
+        <div class="team-name">Design</div>
+        <div class="bar-track"><div class="bar-fill" style="width:74%;background:#1D9E75;"></div></div>
+        <div class="bar-score">74</div>
+      </div>
+      <div class="team-row">
+        <div class="team-name">Product</div>
+        <div class="bar-track"><div class="bar-fill" style="width:69%;background:#7F77DD;"></div></div>
+        <div class="bar-score">69</div>
+      </div>
+      <div class="team-row">
+        <div class="team-name">Sales</div>
+        <div class="bar-track"><div class="bar-fill" style="width:61%;background:#7F77DD;"></div></div>
+        <div class="bar-score">61</div>
+      </div>
+      <div class="team-row" style="margin-bottom:0;">
+        <div class="team-name">Operations</div>
+        <div class="bar-track"><div class="bar-fill" style="width:55%;background:#D85A30;"></div></div>
+        <div class="bar-score">55</div>
+      </div>
+      <div style="margin-top:14px;position:relative;width:100%;height:130px;">
+        <canvas id="orgTrend" role="img" aria-label="Line chart comparing org internal locus trend over 4 weeks across Engineering and Sales teams">Engineering: 70→78. Sales: 64→61.</canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Pattern alerts</div>
+      <div class="alert-card">
+        <div class="alert-head">External locus spike · Mondays</div>
+        <div class="alert-body">Team shows external attribution every Mon — possible weekend disconnection or unclear weekly kickoff.</div>
+      </div>
+      <div class="alert-card">
+        <div class="alert-head">Contribution dip · pre-deadline</div>
+        <div class="alert-body">Contribution scores drop 4pts in the 3 days before sprint deadlines, across all teams.</div>
+      </div>
+      <div class="ok-card">
+        <div class="ok-head">Recovery improving</div>
+        <div class="ok-body">Average rebound time after low-score days has improved from 2.1 days → 1.4 days this month.</div>
+      </div>
+      <div class="no-indiv">No individual data visible here — patterns only</div>
+    </div>
+  </div>
+
+  <div class="sl">Day-of-week heatmap · avg locus score (org-wide)</div>
+  <div class="card" style="margin-bottom:1.25rem;">
+    <div class="card-title">Locus pattern by day · 4-week average</div>
+    <div class="hm-header">
+      <div class="hm-hd">Mon</div><div class="hm-hd">Tue</div><div class="hm-hd">Wed</div><div class="hm-hd">Thu</div><div class="hm-hd">Fri</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="hm-label">Eng</div>
+      <div class="hm-cell" style="background:#5DCAA5;color:#04342C;">74</div>
+      <div class="hm-cell" style="background:#9FE1CB;color:#085041;">78</div>
+      <div class="hm-cell" style="background:#9FE1CB;color:#085041;">80</div>
+      <div class="hm-cell" style="background:#9FE1CB;color:#085041;">79</div>
+      <div class="hm-cell" style="background:#5DCAA5;color:#04342C;">76</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="hm-label">Product</div>
+      <div class="hm-cell" style="background:#F0997B;color:#4A1B0C;">58</div>
+      <div class="hm-cell" style="background:#F5C4B3;color:#712B13;">65</div>
+      <div class="hm-cell" style="background:#9FE1CB;color:#085041;">71</div>
+      <div class="hm-cell" style="background:#5DCAA5;color:#04342C;">74</div>
+      <div class="hm-cell" style="background:#E1F5EE;color:#0F6E56;">68</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="hm-label">Sales</div>
+      <div class="hm-cell" style="background:#F0997B;color:#4A1B0C;">54</div>
+      <div class="hm-cell" style="background:#F5C4B3;color:#712B13;">60</div>
+      <div class="hm-cell" style="background:#F5C4B3;color:#712B13;">63</div>
+      <div class="hm-cell" style="background:#E1F5EE;color:#0F6E56;">67</div>
+      <div class="hm-cell" style="background:#F0997B;color:#4A1B0C;">55</div>
+    </div>
+    <div class="heatmap-row">
+      <div class="hm-label">Ops</div>
+      <div class="hm-cell" style="background:#F0997B;color:#4A1B0C;">51</div>
+      <div class="hm-cell" style="background:#F5C4B3;color:#712B13;">57</div>
+      <div class="hm-cell" style="background:#F5C4B3;color:#712B13;">60</div>
+      <div class="hm-cell" style="background:#E1F5EE;color:#0F6E56;">64</div>
+      <div class="hm-cell" style="background:#F5C4B3;color:#712B13;">59</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:14px;font-size:11px;color:var(--color-text-tertiary);">
+      <span>Low</span>
+      <div style="display:flex;gap:3px;">
+        <div style="width:16px;height:10px;border-radius:2px;background:#F0997B;"></div>
+        <div style="width:16px;height:10px;border-radius:2px;background:#F5C4B3;"></div>
+        <div style="width:16px;height:10px;border-radius:2px;background:#E1F5EE;"></div>
+        <div style="width:16px;height:10px;border-radius:2px;background:#9FE1CB;"></div>
+        <div style="width:16px;height:10px;border-radius:2px;background:#5DCAA5;"></div>
+      </div>
+      <span>High</span>
+      <span style="margin-left:auto;">Internal locus · 0–100</span>
+    </div>
+  </div>
+
+  <div class="three-col">
+    <div class="card">
+      <div class="card-title">Recommended actions</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:12px;padding:9px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-primary);line-height:1.5;">Restructure Monday kickoffs to set clear ownership framing</div>
+        <div style="font-size:12px;padding:9px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-primary);line-height:1.5;">Reduce sprint-end pressure on Sales and Ops teams</div>
+        <div style="font-size:12px;padding:9px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-primary);line-height:1.5;">Reinforce recovery practices — results are showing</div>
+      </div>
+      <button onclick="sendPrompt('Give me a detailed action plan based on these org behavioral patterns')" style="font-size:12px;margin-top:12px;width:100%;padding:8px 0;">Get full action plan ↗</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Participation · 4 weeks</div>
+      <div style="position:relative;width:100%;height:130px;">
+        <canvas id="partChart" role="img" aria-label="Bar chart of weekly participation: Week 13=74%, Week 14=82%, Week 15=88%, Week 16=91%">Participation trend: W13=74, W14=82, W15=88, W16=91.</canvas>
+      </div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:8px;text-align:center;">Adoption growing week-on-week</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Data privacy status</div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:4px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0;"></div>
+          <span style="color:var(--color-text-secondary);">No individual data in this view</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0;"></div>
+          <span style="color:var(--color-text-secondary);">Manager access blocked by design</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0;"></div>
+          <span style="color:var(--color-text-secondary);">Minimum 10 responses per team</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0;"></div>
+          <span style="color:var(--color-text-secondary);">Raw data discarded after mapping</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#7F77DD;flex-shrink:0;"></div>
+          <span style="color:var(--color-text-secondary);">Ephemeral sessions excluded</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gridCol = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
+const tickCol = '#888780';
+
+new Chart(document.getElementById('orgTrend'), {
+  type: 'line',
+  data: {
+    labels: ['W13','W14','W15','W16'],
+    datasets: [
+      { label: 'Engineering', data: [70, 73, 76, 78], borderColor: '#1D9E75', backgroundColor: 'transparent', tension: 0.4, pointBackgroundColor: '#1D9E75', pointRadius: 3, borderWidth: 2, borderDash: [] },
+      { label: 'Sales', data: [64, 63, 60, 61], borderColor: '#D85A30', backgroundColor: 'transparent', tension: 0.4, pointBackgroundColor: '#D85A30', pointRadius: 3, borderWidth: 2, borderDash: [4,3] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: tickCol } },
+      y: { min: 40, max: 90, grid: { color: gridCol }, ticks: { stepSize: 20, font: { size: 11 }, color: tickCol } }
+    }
+  }
+});
+
+new Chart(document.getElementById('partChart'), {
+  type: 'bar',
+  data: {
+    labels: ['W13','W14','W15','W16'],
+    datasets: [{ label: 'Participation %', data: [74, 82, 88, 91], backgroundColor: ['#9FE1CB','#5DCAA5','#1D9E75','#0F6E56'], borderRadius: 4 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: tickCol } },
+      y: { min: 0, max: 100, grid: { color: gridCol }, ticks: { stepSize: 25, font: { size: 11 }, color: tickCol, callback: v => v + '%' } }
+    }
+  }
+});
+</script>
