@@ -1,0 +1,186 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>React to Respond</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #334155;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #475569;
+}
+
+.fade {
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container fade" id="app"></div>
+
+<script>
+const questions = [
+  {
+    text: "Think of one moment today that didn’t go as planned. What stands out most?",
+    options: [
+      "What I was trying to get done",
+      "What in the situation caused the shift",
+      "How people were involved",
+      "How it eventually played out"
+    ]
+  },
+  {
+    text: "In that moment, what felt most available to you?",
+    options: [
+      "Adjust something in how I approached it",
+      "Understand more about what was happening",
+      "Check with others before acting",
+      "Let things unfold a bit"
+    ]
+  },
+  {
+    text: "Looking back, where did you have even a small degree of influence?",
+    options: [
+      "In how I responded",
+      "In how I interpreted it",
+      "In how I engaged with others",
+      "It mostly unfolded on its own"
+    ]
+  },
+  {
+    text: "What made today feel meaningful overall?",
+    options: [
+      "Moving things forward",
+      "Being recognized for effort",
+      "Helping someone",
+      "Things feeling fair"
+    ]
+  },
+  {
+    text: "As you think about the day, what perspective feels most present?",
+    options: [
+      "What I managed",
+      "How the team functioned",
+      "Specific people involved",
+      "The outcome for others"
+    ]
+  }
+];
+
+let step = 0;
+const app = document.getElementById("app");
+
+function render() {
+  app.classList.remove("fade");
+  void app.offsetWidth;
+  app.classList.add("fade");
+
+  if (step === 0) {
+    app.innerHTML = `
+      <h1>React to Respond</h1>
+      <div class="subtitle">A quiet space to reflect, not judge</div>
+      <button onclick="next()">Begin</button>
+    `;
+  }
+
+  else if (step === 1) {
+    app.innerHTML = `
+      <h2>Before we begin</h2>
+      <p style="opacity:0.8">
+        Your responses are private.<br><br>
+        This tool shows patterns, not judgments.<br><br>
+        No manager or external party can access your reflections.
+      </p>
+    `;
+    setTimeout(() => next(), 2500);
+  }
+
+  else if (step - 2 < questions.length) {
+    const q = questions[step - 2];
+
+    app.innerHTML = `
+      <h2>${q.text}</h2>
+      ${q.options.map(opt => 
+        `<button onclick="answer()">${opt}</button>`
+      ).join("")}
+    `;
+  }
+
+  else {
+    app.innerHTML = `
+      <h2>You're done for today</h2>
+      <p style="opacity:0.8">
+        Patterns, not perfection.  
+        See you tomorrow.
+      </p>
+    `;
+  }
+}
+
+function next() {
+  step++;
+  render();
+}
+
+function answer() {
+  next();
+}
+
+render();
+</script>
+
+</body>
+</html>
+```
